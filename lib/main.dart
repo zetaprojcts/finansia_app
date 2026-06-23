@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'core/constants/app_colors.dart'; // Memanggil file warna kita
 
 void main() {
-  // ProviderScope wajib ada agar Riverpod (State Management) kita bisa berfungsi
   runApp(const ProviderScope(child: FinansiaApp()));
 }
 
@@ -13,17 +13,22 @@ class FinansiaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Finansia',
-      debugShowCheckedModeBanner: false, // Menghilangkan pita "DEBUG" di pojok kanan atas
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        // Kita gunakan warna dari AppColors di sini!
+        scaffoldBackgroundColor: AppColors.background,
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
+        useMaterial3: true,
+      ),
       home: const Scaffold(
-        backgroundColor: Color(0xFFFAFAFA), // Warna latar belakang putih bersih
         body: Center(
           child: Text(
-            'Finansia App\nFondasi Berhasil Dipasang!',
+            'Finansia App\nSistem Warna Berhasil Diterapkan!',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF065F46), // Warna hijau utama Finansia
+              color: AppColors.primary, // Menggunakan warna hijau kita
             ),
           ),
         ),
