@@ -3,23 +3,32 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
-import '../providers/transaction_provider.dart'; // Menambahkan import Provider Transaksi
+import '../providers/transaction_provider.dart';
+import '../widgets/add_transaction_bottom_sheet.dart'; // Import form pop-up yang baru dibuat
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
 
-  // Fungsi bantuan kecil untuk mengubah format angka menjadi Rupiah yang rapi
   String _formatRupiah(double amount) {
     return 'Rp ${amount.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.')}';
   }
 
+  // Fungsi untuk memunculkan Pop-Up Form dari bawah
+  void _showAddTransactionForm(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled:
+          true, // Agar form bisa menyesuaikan saat keyboard muncul
+      backgroundColor: Colors.transparent,
+      builder: (context) => const AddTransactionBottomSheet(),
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Memantau data dari database melalui Riverpod
     final summaryAsync = ref.watch(transactionSummaryProvider);
     final transactionsAsync = ref.watch(recentTransactionsProvider);
 
-    // Mengambil nilai, jika masih loading atau error, berikan nilai 0 sementara
     final totalBalance = summaryAsync.value?['totalBalance'] ?? 0.0;
     final totalIncome = summaryAsync.value?['totalIncome'] ?? 0.0;
     final totalExpense = summaryAsync.value?['totalExpense'] ?? 0.0;
@@ -52,6 +61,14 @@ class DashboardScreen extends ConsumerWidget {
           const SizedBox(width: 8),
         ],
       ),
+
+      // TOMBOL MELAYANG UNTUK TAMBAH TRANSAKSI
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showAddTransactionForm(context),
+        backgroundColor: AppColors.primary,
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -71,7 +88,6 @@ class DashboardScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 24),
 
-            // KARTU TOTAL SALDO
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
@@ -98,7 +114,6 @@ class DashboardScreen extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  // Menggunakan data dinamis dari database
                   Text(
                     _formatRupiah(totalBalance),
                     style: const TextStyle(
@@ -141,7 +156,6 @@ class DashboardScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 24),
 
-            // KARTU PEMASUKAN & PENGELUARAN
             Row(
               children: [
                 Expanded(
@@ -173,7 +187,6 @@ class DashboardScreen extends ConsumerWidget {
                           ],
                         ),
                         const SizedBox(height: 8),
-                        // Menggunakan data dinamis dari database
                         Text(
                           _formatRupiah(totalIncome),
                           style: const TextStyle(
@@ -216,7 +229,6 @@ class DashboardScreen extends ConsumerWidget {
                           ],
                         ),
                         const SizedBox(height: 8),
-                        // Menggunakan data dinamis dari database
                         Text(
                           _formatRupiah(totalExpense),
                           style: const TextStyle(
@@ -243,7 +255,6 @@ class DashboardScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
 
-            // Logika sederhana: Jika data kosong, tampilkan ikon Placeholder
             if (transactionsAsync.value?.isEmpty ?? true)
               Center(
                 child: Padding(
@@ -275,8 +286,7 @@ class DashboardScreen extends ConsumerWidget {
                 ),
               )
             else
-              // Tempat untuk menampilkan list transaksi (sementara dikosongkan sampai kita membuat Form Add Transaksi)
-              const SizedBox(),
+              const SizedBox(), // Nanti kita akan isi dengan list transaksi di fase selanjutnya
           ],
         ),
       ),
