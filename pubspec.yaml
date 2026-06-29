@@ -1,0 +1,43 @@
+name: finansia_app
+description: "Modern Personal Finance Management Application."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # State Management & Routing
+  go_router: ^13.2.0
+  flutter_bloc: ^8.1.5
+  # UI & Styling
+  google_fonts: ^6.2.1
+  flutter_svg: ^2.0.10
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  
+  # Registrasi Folder Assets
+  assets:
+    - assets/images/
+    - assets/icons/
+
+  # Registrasi Font Lokal (Poppins)
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins/Poppins-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Poppins/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins/Poppins-Bold.ttf
+          weight: 700
