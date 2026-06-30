@@ -6,6 +6,7 @@ import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/auth/presentation/pages/pin_lock_screen_page.dart';
 import '../../features/auth/presentation/pages/biometric_screen_page.dart';
 import '../../features/auth/presentation/pages/lock_screen_page.dart';
+import '../../features/dashboard/presentation/pages/dashboard_page.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -43,6 +44,11 @@ class AppRouter {
       GoRoute(
           path: '/biometric',
           builder: (context, state) => const BiometricScreenPage()),
+GoRoute(
+  path: '/dashboard',
+  name: 'dashboard',
+  builder: (context, state) => const DashboardPage(),
+),
     ],
   );
 }
