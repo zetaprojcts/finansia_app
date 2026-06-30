@@ -1,6 +1,11 @@
 import 'package:go_router/go_router.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
 import '../../features/auth/presentation/pages/onboarding_page.dart';
+import '../../features/auth/presentation/pages/login_page.dart';
+import '../../features/auth/presentation/pages/register_page.dart';
+import '../../features/auth/presentation/pages/pin_lock_screen_page.dart';
+import '../../features/auth/presentation/pages/biometric_screen_page.dart';
+import '../../features/auth/presentation/pages/lock_screen_page.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -17,6 +22,27 @@ class AppRouter {
         builder: (context, state) => const OnboardingPage(),
       ),
       // Rute '/login' dan '/pin' akan ditambahkan di Bagian 2
+      GoRoute(
+        path: '/login',
+        name: 'login',
+        builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: '/register',
+        name: 'register',
+        builder: (context, state) => const RegisterPage(),
+      ),
+      GoRoute(
+        path: '/pin',
+        name: 'pin',
+        builder: (context, state) => const PinLockScreenPage(),
+      ),
+      GoRoute(
+          path: '/lockscreen',
+          builder: (context, state) => const LockScreenPage()),
+      GoRoute(
+          path: '/biometric',
+          builder: (context, state) => const BiometricScreenPage()),
     ],
   );
 }
