@@ -40,6 +40,7 @@ class _PinLockScreenPageState extends State<PinLockScreenPage> {
   // Simulasi verifikasi sukses dan navigasi menuju Dashboard Utama
   void _processVerification() {
     Future.delayed(const Duration(milliseconds: 300), () {
+      if (!mounted) return;
       // Menuju rute dashboard setelah PIN terverifikasi
       context.go('/dashboard');
     });

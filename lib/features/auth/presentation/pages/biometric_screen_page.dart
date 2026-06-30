@@ -32,7 +32,7 @@ class BiometricScreenPage extends StatelessWidget {
                 padding: const EdgeInsets.all(32),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.primary.withOpacity(0.1),
+                  color: AppColors.primary.withValues(alpha: 0.1),
                 ),
                 child: const Icon(Icons.fingerprint_rounded,
                     size: 100, color: AppColors.primary),

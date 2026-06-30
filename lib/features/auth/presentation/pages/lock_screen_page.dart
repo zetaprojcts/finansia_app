@@ -19,8 +19,10 @@ class _LockScreenPageState extends State<LockScreenPage> {
       setState(() => _enteredPin += number);
       if (_enteredPin.length == _pinLength) {
         // Logika verifikasi PIN ke Dashboard
-        Future.delayed(
-            const Duration(milliseconds: 300), () => context.go('/dashboard'));
+        Future.delayed(const Duration(milliseconds: 300), () {
+          if (!mounted) return;
+          context.go('/dashboard');
+        });
       }
     }
   }
@@ -90,18 +92,21 @@ class _LockScreenPageState extends State<LockScreenPage> {
                     crossAxisSpacing: 16),
                 itemCount: 12,
                 itemBuilder: (context, index) {
-                  if (index == 9)
+                  if (index == 9) {
                     return IconButton(
                         onPressed: _goToBiometricScreen,
                         icon: const Icon(Icons.fingerprint_rounded,
                             size: 40, color: AppColors.primary));
-                  if (index == 10)
+                  }
+                  if (index == 10) {
                     return _buildNumpadButton("0", () => _onNumberPressed("0"));
-                  if (index == 11)
+                  }
+                  if (index == 11) {
                     return IconButton(
                         onPressed: _onBackspacePressed,
                         icon: const Icon(Icons.backspace_outlined,
                             size: 26, color: AppColors.neutral800));
+                  }
 
                   final number = (index + 1).toString();
                   return _buildNumpadButton(

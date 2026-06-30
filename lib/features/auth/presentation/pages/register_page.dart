@@ -28,6 +28,9 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _hasNumber = false;
   bool _hasSymbol = false;
 
+  // TAMBAHAN BARU: Mengunci pilihan jenis kelamin pengguna untuk default avatar (.svg)
+  String? _selectedGender;
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -36,7 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
-  // Fungsi Cek Kekuatan & Syarat Password secara Real-Time
+  // Fungsi Cek Kekuatan & Syarat Password secara Real-Time (Tetap Dipertahankan)
   void _evaluatePasswordStrength(String password) {
     if (password.isEmpty) {
       setState(() {
@@ -70,7 +73,7 @@ class _RegisterPageState extends State<RegisterPage> {
       _hasNumber = number;
       _hasSymbol = symbol;
 
-      // Update bar indikator
+      // Update bar indikator warna
       if (score == 0 || score == 1) {
         _strengthValue = 0.25;
         _strengthLabel = 'Lemah';
@@ -98,6 +101,7 @@ class _RegisterPageState extends State<RegisterPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        // Status bar tetap berwarna hitam konsisten sesuai request sebelumnya
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         leading: IconButton(
           icon:
@@ -128,6 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               const SizedBox(height: 40),
 
+              // 1. Input Nama
               TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
@@ -143,6 +148,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               const SizedBox(height: 20),
 
+              // 2. Input Email
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
@@ -159,7 +165,38 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               const SizedBox(height: 20),
 
-              // Input Password
+              // 3. TAMBAHAN BARU: Dropdown Jenis Kelamin disisipkan di sini secara simetris
+              DropdownButtonFormField<String>(
+                initialValue: _selectedGender,
+                hint: const Text("Jenis Kelamin"),
+                icon: const Icon(Icons.keyboard_arrow_down_rounded,
+                    color: AppColors.neutral500),
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.face_rounded,
+                      color: AppColors.neutral500),
+                  filled: true,
+                  fillColor: AppColors.neutral100,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                items: ['Laki-laki', 'Perempuan'].map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value,
+                        style: const TextStyle(color: AppColors.neutral900)),
+                  );
+                }).toList(),
+                onChanged: (newValue) {
+                  setState(() {
+                    _selectedGender = newValue;
+                  });
+                },
+              ),
+              const SizedBox(height: 20),
+
+              // 4. Input Password
               TextFormField(
                 controller: _passwordController,
                 obscureText: _isObscure,
@@ -184,11 +221,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
 
-              // UI Indikator Kekuatan & Syarat Password (Muncul saat mulai mengetik)
+              // UI Indikator Kekuatan & Syarat Password (Tetap Dipertahankan Utuh)
               if (_strengthValue > 0) ...[
                 const SizedBox(height: 16),
 
-                // 1. Progress Bar
+                // Progress Bar Warna Indikator
                 Row(
                   children: [
                     Expanded(
@@ -220,7 +257,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 16),
 
-                // 2. Daftar Periksa (Checklist) Syarat Karakter
+                // Checklist Syarat Karakter (Tetap Dipertahankan)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -238,12 +275,13 @@ class _RegisterPageState extends State<RegisterPage> {
               ],
 
               const SizedBox(height: 40),
+
+              // Tombol Utama
               SizedBox(
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Logic registrasi di fase selanjutnya
                     context.pop();
                   },
                   style: ElevatedButton.styleFrom(
@@ -262,7 +300,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  // Widget Pembantu untuk membuat Baris Checklist
+  // Widget Pembuat Baris Checklist (Tetap Dipertahankan)
   Widget _buildRequirementItem(String text, bool isMet) {
     return Row(
       children: [

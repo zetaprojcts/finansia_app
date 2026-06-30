@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
@@ -11,11 +12,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // Menambahkan Controller untuk menangkap input pengguna
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  // State untuk menampilkan/menyembunyikan password
   bool _isObscure = true;
 
   @override
@@ -27,10 +26,17 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Status bar hitam menyesuaikan background terang
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.light,
+    ));
+
     return Scaffold(
       body: Stack(
         children: [
-          // Background Full Screen
+          // Background Full Screen (Menggunakan bg_auth.png)
           Image.asset(
             'assets/images/bg_auth.png',
             fit: BoxFit.cover,
@@ -80,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 20),
 
-                  // Input Password dengan Toggle Mata
+                  // Input Password
                   TextFormField(
                     controller: _passwordController,
                     obscureText: _isObscure,
@@ -110,13 +116,16 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
 
-                  // Lupa Password
+                  // Lupa Password (SEKARANG SUDAH BERFUNGSI)
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      onPressed: () {}, // Tambahkan rute lupa password nanti
+                      onPressed: () => context.push(
+                          '/forgot-password'), // Navigasi ke halaman Lupa Password
                       child: const Text("Lupa Sandi?",
-                          style: TextStyle(fontWeight: FontWeight.w600)),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primary)),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -138,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 24),
 
-                  // Pemisah (Divider)
+                  // Pemisah
                   const Row(
                     children: [
                       Expanded(child: Divider(color: AppColors.neutral300)),
@@ -164,6 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                       side: const BorderSide(color: AppColors.neutral300),
                     ),
                     onPressed: () {},
+                    // Menggunakan placeholder jika icon google belum ada, pastikan asset ada di folder
                     icon: SvgPicture.asset('assets/icons/ic_google.svg',
                         width: 24),
                     label: const Text("Lanjut dengan Google",
@@ -183,7 +193,9 @@ class _LoginPageState extends State<LoginPage> {
                       TextButton(
                         onPressed: () => context.push('/register'),
                         child: const Text("Daftar Baru",
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.primary)),
                       ),
                     ],
                   )
